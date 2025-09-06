@@ -10,28 +10,31 @@ Original file is located at
 # To Do list
 # Desired functions- Store Tasks (Task has description, deadline, difficulty rating, done status), Add tasks, Review Tasks, Remove Tasks, Change tasks
 
+
 class Task:
-  def AddTask(self, name : str, desc : str, deadline : str, difficulty : int, status : bool)
-    # Add task function
-    self.desc = desc
-    self.deadline = deadline
-    self.difficulty = deadline
-    self.status = status
-    self.name = name
+    def AddTask(self, name: str, desc: str, deadline: str, difficulty: int, status: bool):
+        # Add task function
+        self.desc = desc
+        self.deadline = deadline
+        self.difficulty = deadline
+        self.status = status
+        self.name = name
 
-  def RemoveTask(nameToRemove : str):
-    print("nothing yet")
-    # Removes the task from the list
+    def RemoveTask(nameToRemove: str):
+        print("nothing yet")
+        # Removes the task from the list
 
-  def ReviewTask(nameToReview : str):
-    print("nothing yet")
-    # Types out the task
+    def ReviewTask(nameToReview: str):
+        print("nothing yet")
+        # Types out the task
 
-  def ChangeTask(nameToChange : str, attributeToChange : str, newAttribute):
-    print("nothing yet")
-    # Changes a specific attribute of a task
+    def ChangeTask(nameToChange: str, attributeToChange: str, newAttribute):
+        print("nothing yet")
+        # Changes a specific attribute of a task
+
 
 def main():
-  print("Welcome to task manager X3000")
+    print("Welcome to task manager X3000")
+
 
 main()
