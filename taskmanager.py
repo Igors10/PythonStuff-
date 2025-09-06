@@ -7,36 +7,79 @@ Original file is located at
     https://colab.research.google.com/drive/1WgK5rj0vpa3eWVcDwBa5yJgY9Nt3ccnh
 """
 
-# To Do list
-# Desired functions- Store Tasks (Task has description, deadline, difficulty rating, done status), Add tasks, Review Tasks, Remove Tasks, Change tasks
+from enum import Enum
 
-user = 1
+# HOW TO USE:                                                                             name                     description                              deadline   difficulty
+# To add a new task follow this example >> "taskmanager.new_task = taskmanager.AddTask("Go to Lidl", "I need to go to Lidl and buy milk, eggs and flour", "September 8", "2")
+
+# To manage tasks use functions of TaskManager class, call them by taskmanager.TaskManager.'NameOfTheFunction'()
+# or >> taskmanager.TaskManager.ReviewTask("Go to Lidl")
+# example >> taskmanager.TaskManager.RemoveTask("Go to Lidl")
+
+# Custom variable for task's status
+class Status(Enum):
+    TODO = 1
+    DONE = 2
+
+class TaskManager:
+  # Array containing all the tasks
+  tasks = []
+
+  def FindTask(self, nameToFind : str): # Only used by the class to find tasks for other functions
+    for task in self.tasks:
+      if task.name == nameToFind: # it iterates through the list until it finds the desired task
+        return task
+
+  def CompleteTask(self, nameToComplete): # Changes tasks's status to done
+    task = self.FindTask(nameToComplete)
+    if task is None:
+      print(f"could not find {nameToComplete}")
+      return
+    else:
+      task.status = Status.DONE
 
 
+  def RemoveTask(self, nameToRemove : str): # Removes the task from the list
+    task = self.FindTask(nameToRemove)
+    if task is None:
+      print(f"could not find {nameToRemove}")
+      return
+    else: self.tasks.remove(task)
+
+
+  def ReviewTask(self, nameToReview : str): # Types out the task
+    task = self.FindTask(nameToReview)
+    if task is None:
+      print(f"could not find {nameToReview}")
+      return
+    else: self.tasks.remove(task)
+
+    print(task.name)
+    print()
+    print(f"Description: {task.name}")
+    print(f"Should be done by {task.deadline}")
+    print(f"Difficulty: {task.difficulty}")
+    print(f"Status: {self.status.name}")
+    print()
+    print()
+
+
+  def ChangeTask(self, nameToChange : str, attributeToChange : str, newAttribute): # not implemented yet
+    print("nothing yet")
+    # Changes a specific attribute of a task
+
+
+# Task class
 class Task:
-    def AddTask(self, name: str, desc: str, deadline: str, difficulty: int, status: bool):
-        # Add task function
-        self.desc = desc
-        self.deadline = deadline
-        self.difficulty = deadline
-        self.status = status
-        self.name = name
+  # Way of adding a new task
+  def _init_(self, name : str, desc : str, deadline : str, difficulty : int)
 
-    def RemoveTask(nameToRemove: str):
-        print("nothing yet")
-        # Removes the task from the list
+    # Paraemeters of Task
+    self.desc = desc
+    self.deadline = deadline
+    self.difficulty = deadline
+    self.status = Status.TODO
+    self.name = name
 
-    def ReviewTask(nameToReview: str):
-        print("nothing yet")
-        # Types out the task
+    TaskManager.tasks.append(self) # adding itself to the list
 
-    def ChangeTask(nameToChange: str, attributeToChange: str, newAttribute):
-        print("nothing yet")
-        # Changes a specific attribute of a task
-
-
-def main():
-    print("Welcome to task manager X3000")
-
-
-main()
