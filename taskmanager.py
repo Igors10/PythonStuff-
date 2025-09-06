@@ -10,6 +10,8 @@ Original file is located at
 # To Do list
 # Desired functions- Store Tasks (Task has description, deadline, difficulty rating, done status), Add tasks, Review Tasks, Remove Tasks, Change tasks
 
+user = 1
+
 
 class Task:
     def AddTask(self, name: str, desc: str, deadline: str, difficulty: int, status: bool):
