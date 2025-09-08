@@ -7,6 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1WgK5rj0vpa3eWVcDwBa5yJgY9Nt3ccnh
 """
 
+from pickle import FALSE
 from enum import Enum
 
 # HOW TO USE:                                                                             name                     description                              deadline   difficulty
@@ -24,62 +25,125 @@ class Status(Enum):
 class TaskManager:
   # Array containing all the tasks
   tasks = []
+  completedTasks = []
 
   def FindTask(self, nameToFind : str): # Only used by the class to find tasks for other functions
     for task in self.tasks:
       if task.name == nameToFind: # it iterates through the list until it finds the desired task
         return task
 
+  def FindCompletedTask(self, nameToFind : str):
+    for task in self.completedTasks: # iterates through completed tasks
+      if task.name == nameToFind:
+        return task
+
   def CompleteTask(self, nameToComplete): # Changes tasks's status to done
     task = self.FindTask(nameToComplete)
     if task is None:
-      print(f"could not find {nameToComplete}")
+      print(f"-could not find {nameToComplete}")
       return
     else:
+      print(f"-{nameToComplete} was moved to done done")
       task.status = Status.DONE
+      self.completedTasks.append(task)
+      self.tasks.remove(task)
 
+  def ReviewAllTasks(self): # Reviews all tasks that are still to do
+    print("Current tasks:")
+    for task in self.tasks:
+      self.ReviewTask(task.name)
+
+  def ReviewCompletedTasks(self): # Reviews all tasks that done
+    print("Completed tasks:")
+    for task in self.completedTasks:
+      self.ReviewTask(task.name)
 
   def RemoveTask(self, nameToRemove : str): # Removes the task from the list
     task = self.FindTask(nameToRemove)
     if task is None:
-      print(f"could not find {nameToRemove}")
+      print(f"-could not find {nameToRemove}")
       return
-    else: self.tasks.remove(task)
+    else:
+      print(f"-{nameToRemove} was removed from the task list")
+      self.tasks.remove(task)
 
 
   def ReviewTask(self, nameToReview : str): # Types out the task
     task = self.FindTask(nameToReview)
     if task is None:
-      print(f"could not find {nameToReview}")
-      return
-    else: self.tasks.remove(task)
+      task = self.FindCompletedTask(nameToReview)
+      if task is None:
+        print(f"-could not find {nameToReview}")
+        return
 
-    print(task.name)
     print()
-    print(f"Description: {task.name}")
+    print(f"=== Task: {task.name} ========")
+    print()
+    print(f"Description: {task.desc}")
     print(f"Should be done by {task.deadline}")
     print(f"Difficulty: {task.difficulty}")
-    print(f"Status: {self.status.name}")
-    print()
+    print(f"Status: {task.status.name}")
+    print("==================================")
     print()
 
+  def IsNumber(self, userInput): # This function checks if value input is a number
+    try:
+      number = int(userInput)
+      return True
+    except ValueError:
+      return False
 
-  def ChangeTask(self, nameToChange : str, attributeToChange : str, newAttribute): # not implemented yet
-    print("nothing yet")
-    # Changes a specific attribute of a task
+  def ChangeTask(self, nameToChange : str, attributeToChange : str, newAttribute): # Changes a specific attribute of a task
+    task = self.FindTask(nameToChange)
+    if task is None:
+      print(f"-could not find {nameToChange}")
+      return
+
+    match attributeToChange:
+      case "name":
+        task.name = newAttribute
+      case "desc":
+        task.desc = newAttribute
+      case "deadline":
+        task.deadline = newAttribute
+      case "difficulty":
+        task.difficulty = newAttribute
+      case _:
+        print(f"-Task doesn't have {attributeToChange} attribute")
+
+    print(f"-{attributeToChange} of task {nameToChange} was changed to {newAttribute}")
+
 
 
 # Task class
 class Task:
   # Way of adding a new task
-  def _init_(self, name : str, desc : str, deadline : str, difficulty : int)
+  def __init__(self, name : str, desc : str, deadline : str, difficulty : int):
 
     # Paraemeters of Task
     self.desc = desc
     self.deadline = deadline
-    self.difficulty = deadline
+    self.difficulty = difficulty
     self.status = Status.TODO
     self.name = name
 
     TaskManager.tasks.append(self) # adding itself to the list
+    print(f"-{name} was added to the task list")
+
+# Example of how it can function
+def Test():
+  manager = TaskManager()
+
+  Task("Code with Alkam", "Code this taskmanager in python and test it", "08.09", 2)
+  manager.ReviewTask("Code with Alkam")
+  manager.ChangeTask("Code with Alkam", "desc", "No testing needed, just code the thing")
+  manager.ReviewTask("Code with Alkam")
+  Task("Fix the bike", "Go to the bike fixing store and ask the dude how much will it cost to change a tire", "09.09", 1)
+  Task("Appartment in Stockholm", "Find an apartment in Stockholm for 10 months, preferably cheaper then 5000 kr", "30.09", 5)
+  manager.ReviewAllTasks()
+  manager.CompleteTask("Code with Alkam")
+  manager.ReviewAllTasks()
+  manager.ReviewCompletedTasks()
+
+#Test()
 
